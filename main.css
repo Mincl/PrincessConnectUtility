@@ -1,0 +1,53 @@
+body {
+	margin: 0;
+}
+
+.simulator {
+	display: flex;
+}
+
+.simulator .visual_view {
+	display: inline-block;
+	position: relative;
+}
+
+.simulator .visual_view svg {
+	margin: 0 5%;
+	width: 90%;
+	height: 100%;
+}
+
+.simulator .visual_view svg line {
+	stroke: rgb(0,0,0);
+	stroke-width: 2;
+}
+
+.simulator .visual_view .icon_view {
+	margin: 0 5%;
+	width: 90%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.simulator .visual_view .icon_view img {
+	height: 100%;
+}
+
+.simulator .list_view {
+	display: inline-block;
+	padding: 2%;
+	width: 30%;
+}
+
+.simulator .list_view ul {
+	list-style-type: none;
+	padding-left: 3%;
+	overflow-y: scroll;
+	height: 67%;
+}
+
+.simulator .list_view ul li {
+	height: 30%;
+}
