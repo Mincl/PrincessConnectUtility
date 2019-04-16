@@ -110,7 +110,7 @@ window.onload = function() {
 		}
 		var li=$('<li></li>');
 		li.attr('id', 'li_'+data[key].id);
-		var label=$('<label class="container">'+data[key].name+'</label>');
+		var label=$('<label class="container"></label>');
 		var input=$('<input type="checkbox"/>');
 		input.attr('name', data[key].id);
 		input.change(function(e) {
@@ -129,8 +129,13 @@ window.onload = function() {
 			console.log(party_cnt);
 		});
 		var span=$('<span class="checkmark"></span>');
+		var icon=$('<img />');
+		var name=$('<span class="name">'+data[key].name+'</span>');
+		icon.attr('src', data[key].icon);
 		label.append(input);
 		label.append(span);
+		label.append(icon);
+		label.append(name);
 		li.append(label);
 		$('#list').append(li);
 	}
