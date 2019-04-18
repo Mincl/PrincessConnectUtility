@@ -9,20 +9,38 @@ body {
 .simulator .visual_view {
 	display: inline-block;
 	position: relative;
+	background-image: url("images/bg.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position-y: center;
 }
 
-.simulator .visual_view svg {
-	margin: 0 5%;
+.simulator .visual_view div {
+	display: inline-block;
+	width: 100%;
+}
+
+.simulator .visual_view div svg {
+	/*width: 45%;*/
 	width: 90%;
 	height: 100%;
 }
 
-.simulator .visual_view svg line {
+.simulator .visual_view .left_view svg {
+	/*margin: 0 0 0 5%;*/
+	margin: 0 5%;
+}
+
+.simulator .visual_view .right_view svg {
+	margin: 0 5% 0 0;
+}
+
+.simulator .visual_view div svg line {
 	stroke: rgb(0,0,0);
 	stroke-width: 2;
 }
 
-.simulator .visual_view .icon_view {
+.simulator .visual_view div .icon_view {
 	margin: 0 5%;
 	width: 90%;
 	height: 100%;

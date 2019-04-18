@@ -14,12 +14,21 @@
 <body>
 	<div id="dist_div" class="simulator">
 		<div id="visual_div" class="visual_view">
-			<svg id="svg">
-				<!-- middle line -->
-				<line x1="0%" y1="50%" x2="100%" y2="50%"/>
-			</svg>
-			<div id="icon_div" class="icon_view">
+			<div id="my_area" class="left_view">
+				<svg>
+					<!-- middle line -->
+					<line x1="0%" y1="50%" x2="100%" y2="50%"/>
+				</svg>
+				<div class="icon_view">
+				</div>
 			</div>
+<!-- 			<div id="enemy_area" class="right_view">
+				<svg>
+					<line x1="0%" y1="50%" x2="100%" y2="50%"/>
+				</svg>
+				<div class="icon_view">
+				</div>
+			</div> -->
 		</div>
 		<div id="list_div" class="list_view">
 			<div>
@@ -33,6 +42,8 @@
 
 <script type="text/javascript">
 // const value's
+var DEBUG=false;
+
 // draw screen size percent
 var visual_width=70;
 var dist_height=35;
@@ -52,6 +63,11 @@ var party_cnt=0;
 var party={
 };
 
+function log(str) {
+	if (DEBUG)
+		console.log(str);
+}
+
 // 초성 추출
 function getChosung(text) {
 	var dis = Hangul.disassemble(text, true);
@@ -65,7 +81,7 @@ function getChosung(text) {
 function resize_resource() {
 	// icon width recalculate
 	var ico_height_pix = $('#visual_div').height() * ico_height / 100;
-	ico_width = ico_height_pix * 100 / $('#icon_div').width();
+	ico_width = ico_height_pix * 100 / $('#my_area .icon_view').width();
 
 	var checkmark_height_pix = $('.checkmark').height();
 	var checkmark_width = checkmark_height_pix * 100 / $('label.container').width();
@@ -101,37 +117,37 @@ window.onload = function() {
 	});
 
 	// load data
-	for(key in data) {
-		if (data[key].range > max_range) {
-			max_range = data[key].range;
+	for(key in DATA_CHAR) {
+		if (DATA_CHAR[key].range > max_range) {
+			max_range = DATA_CHAR[key].range;
 		}
-		if (data[key].range < min_range) {
-			min_range = data[key].range;
+		if (DATA_CHAR[key].range < min_range) {
+			min_range = DATA_CHAR[key].range;
 		}
 		var li=$('<li></li>');
-		li.attr('id', 'li_'+data[key].id);
+		li.attr('id', 'li_'+DATA_CHAR[key].id);
 		var label=$('<label class="container"></label>');
 		var input=$('<input type="checkbox"/>');
-		input.attr('name', data[key].id);
+		input.attr('name', DATA_CHAR[key].id);
 		input.change(function(e) {
 			if(this.checked) {
 				// select
 				var id = $(this).attr('name');
-				if (!add_member(data[id]))
+				if (!add_member(DATA_CHAR[id]))
 					$(this).prop('checked', false);
 			} else {
 				// unselect
 				var id = $(this).attr('name');
-				if (!remove_member(data[id]))
+				if (!remove_member(DATA_CHAR[id]))
 					$(this).prop('checked', true);
 			}
 			update_party_icons(party);
-			console.log(party_cnt);
+			log(party_cnt);
 		});
 		var span=$('<span class="checkmark"></span>');
 		var icon=$('<img />');
-		var name=$('<span class="name">'+data[key].name+'</span>');
-		icon.attr('src', data[key].icon);
+		var name=$('<span class="name">'+DATA_CHAR[key].name+'</span>');
+		icon.attr('src', DATA_CHAR[key].icon);
 		label.append(input);
 		label.append(span);
 		label.append(icon);
@@ -232,7 +248,7 @@ function cal_height(intervals) {
 
 function add_party_icon(character) {
 	// add range line
-	var svg = $('#svg');
+	var svg = $('#my_area svg');
 	var line_id = 'p_line_'+character.id;
 	var line = makeSVG('line', {
 		id: line_id,
@@ -244,7 +260,7 @@ function add_party_icon(character) {
 	character.line_id = line_id;
 	svg.append(line);
 
-	var div = $('#icon_div');
+	var div = $('#my_area .icon_view');
 	var icon_id = 'p_ico_'+character.id;
 	// icon div
 	var party_div = $('<div class="tooltip"></div>');
@@ -300,7 +316,7 @@ function cal_coord(party) {
 	}
 	var x_intervals = cal_interval(x_range);
 	var heights = cal_height(x_intervals);
-	console.log(heights);
+	log(heights);
 
 	for (idx in x_range) {
 		var id = x_range[idx].id;
