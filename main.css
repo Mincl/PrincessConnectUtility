@@ -15,9 +15,10 @@ body {
 	background-position-y: center;
 }
 
-.simulator .visual_view div {
+.simulator .visual_view .left_view {
 	display: inline-block;
-	width: 100%;
+	position: relative;
+	width: 49%;
 }
 
 .simulator .visual_view div svg {

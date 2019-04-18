@@ -56,7 +56,7 @@ var max_range = 0;
 var min_range = 1000;
 
 // icon size percent by visual width
-var ico_height=10;
+var ico_height=15;
 var ico_width=0;
 
 var party_cnt=0;
@@ -82,6 +82,7 @@ function resize_resource() {
 	// icon width recalculate
 	var ico_height_pix = $('#visual_div').height() * ico_height / 100;
 	ico_width = ico_height_pix * 100 / $('#my_area .icon_view').width();
+	$('.tooltip').css('width', ico_width+"%");
 
 	var checkmark_height_pix = $('.checkmark').height();
 	var checkmark_width = checkmark_height_pix * 100 / $('label.container').width();
