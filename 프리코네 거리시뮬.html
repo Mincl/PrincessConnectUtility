@@ -1,14 +1,14 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-	<link rel="stylesheet" type="text/css" href="tooltip.css"/>
-	<link rel="stylesheet" type="text/css" href="checkbox.css"/>
-	<link rel="stylesheet" type="text/css" href="search.css"/>
-	<link rel="stylesheet" type="text/css" href="main.css"/>
+	<link rel="stylesheet" type="text/css" href="static/css/tooltip.css"/>
+	<link rel="stylesheet" type="text/css" href="static/css/checkbox.css"/>
+	<link rel="stylesheet" type="text/css" href="static/css/search.css"/>
+	<link rel="stylesheet" type="text/css" href="static/css/main.css"/>
 
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
-	<script src="https://unpkg.com/hangul-js" type="text/javascript"></script>
-	<script src="data.js" type="text/javascript"></script>
+	<script src="static/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+	<script src="static/js/hangul-js.js" type="text/javascript"></script>
+	<script src="static/js/data.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -42,11 +42,11 @@
 
 <script type="text/javascript">
 // const value's
-var DEBUG=false;
+var DEBUG=true;
 
 // draw screen size percent
 var visual_width=70;
-var dist_height=35;
+var dist_height=50;
 
 // padding percent
 var h_pad=2;
@@ -56,7 +56,7 @@ var max_range = 0;
 var min_range = 1000;
 
 // icon size percent by visual width
-var ico_height=15;
+var ico_height=13;
 var ico_width=0;
 
 var party_cnt=0;
@@ -218,16 +218,16 @@ function cal_height(intervals) {
 
 	var intervals_pos = [];
 	for (i in intervals) {
-		intervals_pos.push(0);
+		intervals_pos.push(-1);
 	}
 
-	for (var pos = 1; pos <= 5; pos++) {
+	for (var pos = 0; pos < 5; pos++) {
 		var latest_left = 1000;
 		for (i in intervals) {
 			var left = intervals[i][0];
 			var right = intervals[i][1];
 
-			if (intervals_pos[i] == 0 && latest_left >= right) {
+			if (intervals_pos[i] < 0 && latest_left >= right) {
 				latest_left = left;
 				intervals_pos[i] = pos;
 			}
@@ -236,11 +236,16 @@ function cal_height(intervals) {
 
 	var heights = [];
 	for (h in intervals_pos) {
-		var h_factor = intervals_pos[h]%2*2-1;
-		var h_num = parseInt((intervals_pos[h]+1)/2, 10);
-		var height = h_factor * (ico_height+h_pad) * h_num;
-		if (h_factor < 0)
-			height += ico_height;
+		var height = ico_height / 2;
+		if (intervals_pos[h] > 0) {
+			var h_factor = intervals_pos[h]%2*(-1)*2+1;
+			var h_num = parseInt((intervals_pos[h]+1)/2, 10);
+			height = (ico_height+h_pad) * (h_num-1);
+			height += ico_height / 2 + h_pad;
+			height *= h_factor;
+			if (h_factor > 0)
+				height += ico_height;
+		}
 		heights.push(height);
 	}
 
