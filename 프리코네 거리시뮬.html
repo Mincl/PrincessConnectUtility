@@ -15,10 +15,6 @@
 	<div id="dist_div" class="simulator">
 		<div id="visual_div" class="visual_view">
 			<div id="my_area" class="left_view">
-				<svg>
-					<!-- middle line -->
-					<line x1="0%" y1="50%" x2="100%" y2="50%"/>
-				</svg>
 				<div class="icon_view">
 				</div>
 			</div>
@@ -186,24 +182,12 @@ function remove_member(character) {
 	return true;
 }
 
-function makeSVG(tag, attrs) {
-	var el= document.createElementNS('http://www.w3.org/2000/svg', tag);
-	for (var k in attrs)
-		el.setAttribute(k, attrs[k]);
-	return el;
-}
-
-function makeEl(tag, attrs, styles) {
-	var el= document.createElement(tag);
-	for (var k in attrs)
-		el.setAttribute(k, attrs[k]);
-	var styleStr = "";
-	for (var s in styles) {
-		styleStr += s+":"+styles[s]+";";
-	}
-	el.setAttribute('style',styleStr);
-	return el;
-}
+// function makeSVG(tag, attrs) {
+// 	var el= document.createElementNS('http://www.w3.org/2000/svg', tag);
+// 	for (var k in attrs)
+// 		el.setAttribute(k, attrs[k]);
+// 	return el;
+// }
 
 function cal_interval(range) {
 	var intervals = [];
@@ -253,19 +237,6 @@ function cal_height(intervals) {
 }
 
 function add_party_icon(character) {
-	// add range line
-	var svg = $('#my_area svg');
-	var line_id = 'p_line_'+character.id;
-	var line = makeSVG('line', {
-		id: line_id,
-		x1: character.center_x+'%',
-		y1: character.middle_y+'%',
-		x2: character.center_x+'%',
-		y2: '50%'
-	});
-	character.line_id = line_id;
-	svg.append(line);
-
 	var div = $('#my_area .icon_view');
 	var icon_id = 'p_ico_'+character.id;
 	// icon div
@@ -290,8 +261,6 @@ function add_party_icon(character) {
 function update_party_icons(party) {
 	for (p in party) {
 		var chara = party[p];
-		var line = $('#'+chara.line_id);
-		line.attr('y1', chara.middle_y+'%');
 		var icon = $('#'+chara.icon_id);
 		icon.css('left', chara.left_x+'%');
 		icon.css('top', chara.top_y+'%');
