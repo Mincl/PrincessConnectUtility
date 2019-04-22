@@ -22,19 +22,6 @@ body {
 	height: 100%;
 }
 
-.simulator .visual_view div .icon_view {
-	margin: 0 5%;
-	width: 90%;
-	height: 100%;
-	position: absolute;
-	left: 0;
-	top: 0;
-}
-
-.simulator .visual_view .icon_view img {
-	height: 100%;
-}
-
 .simulator .list_view {
 	display: inline-block;
 	padding: 2%;

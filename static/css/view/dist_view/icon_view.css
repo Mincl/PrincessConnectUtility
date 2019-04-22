@@ -1,0 +1,12 @@
+.icon_view {
+	margin: 0 5%;
+	width: 90%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.icon_view img {
+	height: 100%;
+}
