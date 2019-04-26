@@ -18,35 +18,39 @@
 	<script src="static/js/view/dist_view/icon.js" type="text/javascript"></script>
 	<script src="static/js/view/dist_view/icon_view.js" type="text/javascript"></script>
 
-	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 	<script>
 		(adsbygoogle = window.adsbygoogle || []).push({
 			google_ad_client: "ca-pub-5508707726988644",
 			enable_page_level_ads: true
 		});
-	</script>
+	</script> -->
 </head>
 
 <body>
 	<div id="dist_div" class="simulator">
+    <div class="list_view">
+      <div>
+        <input class="search" type="text" placeholder="아군 팀 캐릭터 검색"/>
+      </div>
+      <ul class="list left_list">
+      </ul>
+    </div>
 		<div id="visual_div" class="visual_view">
-			<div id="my_area" class="left_view">
+			<div id="my_area" class="view left_view">
+<!-- 				<div class="icon_view">
+				</div> -->
+			</div><!-- 
+ 			 --><div id="enemy_area" class="view right_view">
 <!-- 				<div class="icon_view">
 				</div> -->
 			</div>
-<!-- 			<div id="enemy_area" class="right_view">
-				<svg>
-					<line x1="0%" y1="50%" x2="100%" y2="50%"/>
-				</svg>
-				<div class="icon_view">
-				</div>
-			</div> -->
 		</div>
-		<div id="list_div" class="list_view">
+		<div class="list_view">
 			<div>
-				<input id="search" class="search" type="text" placeholder="캐릭터 검색"/>
+				<input class="search" type="text" placeholder="적군 팀 캐릭터 검색"/>
 			</div>
-			<ul id="list">
+			<ul class="list right_list">
 			</ul>
 		</div>
 	</div>
@@ -72,7 +76,9 @@ const ico_height=13;
 var ico_width=0;
 
 var my_party = new Party();
-var icon_view = new IconView();
+var my_icon_view = new IconView();
+var enemy_party = new Party();
+var enemy_icon_view = new IconView();
 
 function log(str) {
 	if (DEBUG)
@@ -86,45 +92,76 @@ function getChosung(text) {
 	return cho;
 }
 
-function resize_resource() {
+function resizeResource() {
 	// icon width recalculate
-	var ico_height_pix = $('#visual_div').height() * ico_height / 100;
-	ico_width = ico_height_pix * 100 / $('#my_area .icon_view').width();
-	icon_view.setIconSize(ico_width, ico_height);
-	// $('.tooltip').css('width', `${ico_width}%`);
+	const ico_height_pix = $('#visual_div').height() * ico_height / 100;
+	ico_width = ico_height_pix * 100 / my_icon_view.dom.width();
+	my_icon_view.setIconSize(ico_width, ico_height);
+  ico_width = ico_height_pix * 100 / enemy_icon_view.dom.width();
+  enemy_icon_view.setIconSize(ico_width, ico_height);
 
-	var checkmark_height_pix = $('.checkmark').height();
-	var checkmark_width = checkmark_height_pix * 100 / $('label.container').width();
+	const checkmark_height_pix = $('.checkmark').height();
+	const checkmark_width = checkmark_height_pix * 100 / $('label.container').width();
 	$('.checkmark').css('width', `${checkmark_width}%`);
 	$('label.container').css('padding-left', `${(checkmark_width+3)}%`);
 }
 
+function repositionParty(party, icon_view, side) {
+
+  const members = party.members;
+  const coords = cal_coord(members);
+
+  for (var i in members) {
+    var left = coords[i].left;
+    var top = coords[i].top;
+    if (side == 'right') {
+      left = 100 - left;
+    }
+    icon_view.icons[members[i].iconId].setPos(left, top);
+  }  
+}
+
 window.onresize = function() {
-	resize_resource();
+	resizeResource();
 
-	const members = my_party.members;
-	const coords = cal_coord(members);
+  repositionParty(my_party, my_icon_view, 'left');
+  repositionParty(enemy_party, enemy_icon_view, 'right');
+}
 
-	for (var i in members) {
-		icon_view.icons[members[i].iconId].setPos(coords[i].left, coords[i].top);
-	}
-	// update_party_icons(my_party);
+function checkboxChange(target, party, icon_view, side) {
+  const id = $(target).attr('name');
+  const char = DataManager.getCharacterById(id);
+  log(char);
+
+  if(target.checked) {
+    // select
+    if (!addMember(char, party, icon_view, side))
+      $(target).prop('checked', false);
+  } else {
+    // unselect
+    const member = party.getMemberById(id);
+    if (!removeMember(member, party, icon_view, side))
+      $(target).prop('checked', true);
+  }
+  window.onresize();
 }
 
 window.onload = function() {
 	$('#dist_div').css('height', `${dist_height}%`);
 	$('#visual_div').css('width', `${visual_width}%`);
 
-	$('#my_area').append(icon_view.dom);
+  $('#my_area').append(my_icon_view.dom);
+  $('#enemy_area').append(enemy_icon_view.dom);
 
 	// 초성검색까지 됨
-	$('#search').bind('change keydown keyup',function(e) {
-		var target_name = $(this).val();
+	$('.search').bind('change keydown keyup',function(e) {
+		const target_name = $(this).val();
+    const li = $(this).parents('.list_view').children('ul').children('li');
 		if (target_name == "") {
-			$('ul li').css('display', 'block');
+			li.css('display', 'block');
 		} else {
-			$('ul li').css('display', 'none');
-			$('ul li label').each(function(idx) {
+			li.css('display', 'none');
+			li.children('label').each(function(idx) {
 				if ($(this).text().includes(target_name)) {
 					$(this).parent().css('display', 'block');
 				} else if (getChosung($(this).text()).includes(target_name)) {
@@ -140,26 +177,13 @@ window.onload = function() {
 		max_dist = Math.max(max_dist, char.dist);
 		min_dist = Math.min(min_dist, char.dist);
 
-		var li=$(`<li id="li_${char.id}"></li>`);
+    // left
+		var li=$(`<li id="li_left_${char.id}"></li>`);
 		var label=$('<label class="container"></label>');
 		var input=$(`<input type="checkbox" name="${char.id}"/>`);
 		input.change(function(e) {
-			const id = $(this).attr('name');
-			const char = DataManager.getCharacterById(id);
-			log(char);
-			if(this.checked) {
-				// select
-				if (!add_member(char))
-					$(this).prop('checked', false);
-			} else {
-				// unselect
-				const member = my_party.getMemberById(id);
-				if (!remove_member(member))
-					$(this).prop('checked', true);
-			}
-			window.onresize();
-			// update_party_icons(my_party);
-		});
+      checkboxChange(this, my_party, my_icon_view, 'left');
+    });
 		var span=$('<span class="checkmark"></span>');
 		var icon=$('<img />');
 		var name=$(`<span class="name">${char.name}</span>`);
@@ -169,42 +193,53 @@ window.onload = function() {
 		label.append(icon);
 		label.append(name);
 		li.append(label);
-		$('#list').append(li);
+		$('.left_list').append(li);
+
+    // right
+    var li=$(`<li id="li_right_${char.id}"></li>`);
+    var label=$('<label class="container"></label>');
+    var input=$(`<input type="checkbox" name="${char.id}"/>`);
+    input.change(function(e) {
+      checkboxChange(this, enemy_party, enemy_icon_view, 'right');
+    });
+    var span=$('<span class="checkmark"></span>');
+    var icon=$('<img />');
+    var name=$(`<span class="name">${char.name}</span>`);
+    icon.attr('src', char.icon);
+    label.append(input);
+    label.append(span);
+    label.append(icon);
+    label.append(name);
+    li.append(label);
+    $('.right_list').append(li);
 	}
 
-	resize_resource();
+	resizeResource();
 }
 
-function add_member(character) {
-	if (!my_party.addMember(character))
+function addMember(character, party, icon_view, side) {
+  log('character id: '+character.id);
+	if (!party.addMember(character))
 		return false;
 	const iconId = icon_view.addIcon(
 		character.id,
 		-10, -10,
-		`거리: ${character.dist}`, character.icon, e => remove_member(character));
+		`거리: ${character.dist}`, character.icon, e => removeMember(character, party, icon_view, side));
 	character.iconId = iconId;
-	// add_party_icon(character);
 	return true;
 }
 
-function remove_member(character) {
-	if (!my_party.removeMember(character))
+function removeMember(character, party, icon_view, side) {
+	if (!party.removeMember(character))
 		return false;
 	
 	icon_view.removeIcon(character.iconId);
-	var chkbox = $(`#li_${character.id} input[type="checkbox"]`);
+	var chkbox = $(`#li_${side}_${character.id} input[type="checkbox"]`);
 	if(chkbox.prop('checked')) {
 		chkbox.prop('checked', false);
 	}
 	return true;
 }
-
-// function makeSVG(tag, attrs) {
-// 	var el= document.createElementNS('http://www.w3.org/2000/svg', tag);
-// 	for (var k in attrs)
-// 		el.setAttribute(k, attrs[k]);
-// 	return el;
-// }
 
 function cal_interval(dists) {
 	var intervals = [];
@@ -252,35 +287,6 @@ function cal_height(intervals) {
 	}
 
 	return heights;
-}
-
-function add_party_icon(character) {
-	var div = $('#my_area .icon_view');
-	var icon_id = `p_ico_${character.id}`;
-	// icon div
-	var party_div = $('<div class="tooltip"></div>');
-	party_div.attr('id', icon_id).css('left', `${character.left}%`).css('top', `${character.top}%`)
-		.css('width', ico_width+'%').css('height', `${ico_height}%`);
-	// icon image
-	var img = $('<img />');
-	img.attr('src', character.icon);
-	character.icon_id = icon_id;
-	party_div.append(img);
-	// tooltip text
-	var span = $('<span class="tooltiptext"></span>');
-	span.text(`거리: ${character.dist}`);
-	party_div.append(span);
-	party_div.click(e => remove_member(character));
-	div.append(party_div);
-}
-
-function update_party_icons(party) {
-	for (p in party) {
-		var chara = party[p];
-		var icon = $(`#${chara.icon_id}`);
-		icon.css('left', `${chara.left}%`);
-		icon.css('top', `${chara.top}%`);
-	}
 }
 
 function cal_coord(members) {
