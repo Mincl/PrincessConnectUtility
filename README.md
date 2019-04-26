@@ -1,2 +1,2 @@
 # Usage
-- https://mincl.github.io/PrincessConnectDistanceSimulator/
+- https://mincl.github.io/PrincessConnectUtility/
