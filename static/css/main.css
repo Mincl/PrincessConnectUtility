@@ -15,17 +15,25 @@ body {
 	background-position-y: center;
 }
 
-.simulator .visual_view .left_view {
+.simulator .visual_view .view {
 	display: inline-block;
 	position: relative;
-	width: 49%;
 	height: 100%;
+}
+
+
+.simulator .visual_view .view.left_view {
+	width: 49%;
+}
+
+.simulator .visual_view .view.right_view {
+	width: 51%;
 }
 
 .simulator .list_view {
 	display: inline-block;
 	padding: 2%;
-	width: 30%;
+	width: 15%;
 }
 
 .simulator .list_view ul {
