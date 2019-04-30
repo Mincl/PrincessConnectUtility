@@ -1,4 +1,8 @@
 class Character {
+	// id: int
+	// name: string
+	// icon: string (path)
+	// dist: int
 	constructor(id, name, icon, dist) {
 		this.id = id;
 		this.name = name;
