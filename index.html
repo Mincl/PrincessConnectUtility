@@ -118,15 +118,15 @@ function resizeResource() {
 function repositionParty(party, icon_view, side) {
 
   const members = party.members;
-  const coords = cal_coord(members);
+  const coords = calCoord(members);
 
   for (var i in members) {
-    var left = coords[i].left;
+    var left_p = coords[i].left;
     var top = coords[i].top;
     if (side == 'right') {
-      left = 100 - left;
+      left_p = 100 - coords[i].right;
     }
-    icon_view.icons[members[i].iconId].setPos(left, top);
+    icon_view.icons[members[i].iconId].setPos(left_p, top);
   }  
 }
 
@@ -138,6 +138,7 @@ window.onresize = function() {
 }
 
 function checkboxChange(target, party, icon_view, side) {
+  log(`checkboxChange ----------------`);
   const id = $(target).attr('name');
   const char = DataManager.getCharacterById(id);
   log(char);
@@ -153,6 +154,7 @@ function checkboxChange(target, party, icon_view, side) {
       $(target).prop('checked', true);
   }
   window.onresize();
+  log(`---------------- checkboxChange`);
 }
 
 window.onload = function() {
@@ -227,6 +229,7 @@ window.onload = function() {
 }
 
 function addMember(character, party, icon_view, side) {
+  log('addMember ---------------------');
   log('character id: '+character.id);
   if (!party.addMember(character))
     return false;
@@ -235,6 +238,7 @@ function addMember(character, party, icon_view, side) {
     -10, -10,
     `거리: ${character.dist}`, character.icon, e => removeMember(character, party, icon_view, side));
   character.iconId = iconId;
+  log('--------------------- addMember');
   return true;
 }
 
@@ -250,7 +254,7 @@ function removeMember(character, party, icon_view, side) {
   return true;
 }
 
-function cal_interval(dists) {
+function calInterval(dists) {
   var intervals = [];
   var half_ico_width = ico_width / 2;
   for (var dist of dists) {
@@ -260,7 +264,7 @@ function cal_interval(dists) {
  return intervals;
 }
 
-function cal_height(intervals) {
+function calHeight(intervals) {
 
   var intervals_pos = [];
   for (i in intervals) {
@@ -298,7 +302,8 @@ function cal_height(intervals) {
   return heights;
 }
 
-function cal_coord(members) {
+function calCoord(members) {
+  log('calCoord -------------------');
 
   // calculate interval
   var x_dist = [];
@@ -307,8 +312,8 @@ function cal_coord(members) {
     var x = 100 * (1 - (char.dist - min_dist) / (max_dist - min_dist));
     x_dist.push(x);
   }
-  var x_intervals = cal_interval(x_dist);
-  var heights = cal_height(x_intervals);
+  var x_intervals = calInterval(x_dist);
+  var heights = calHeight(x_intervals);
   log(heights);
 
   var res = [];
@@ -316,6 +321,7 @@ function cal_coord(members) {
     var character = members[idx];
 
     var left = x_intervals[idx][0];
+    var right = x_intervals[idx][1];
     var top = 50 - heights[idx];
     
     var middle_y = top + ico_height / 2;
@@ -324,10 +330,12 @@ function cal_coord(members) {
     coord.center_x = x_dist[idx].x;
     coord.middle_y = middle_y;
     coord.left = left;
+    coord.right = right;
     coord.top = top;
     res.push(coord);
   }
 
+  log('------------------- calCoord');
   return res;
 }
 
