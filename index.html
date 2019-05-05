@@ -32,7 +32,7 @@
   <div class="nav">
     <ul>
       <li><a href="#" class="active">배틀아레나 파티 배치</a></li>
-      <li><a href="#">파밍 계산</a></li>
+      <li><a href="item.html">파밍 계산</a></li>
     </ul>
   </div>
 
@@ -46,10 +46,10 @@
     </div>
     <div id="visual_div" class="visual_view">
       <div id="my_area" class="view left_view">
-          <!-- <div class="icon_view">
-          </div> -->
-        </div><!-- 
-    --><div id="enemy_area" class="view right_view">
+        <!-- <div class="icon_view">
+        </div> -->
+      </div><!-- 
+   --><div id="enemy_area" class="view right_view">
         <!-- <div class="icon_view">
         </div> -->
       </div>
@@ -169,18 +169,18 @@ window.onload = function() {
     const target_name = $(this).val();
     const li = $(this).parents('.list_view').children('ul').children('li');
     if (target_name == "") {
-     li.css('display', 'block');
-   } else {
-     li.css('display', 'none');
-     li.children('label').each(function(idx) {
-      if ($(this).text().includes(target_name)) {
-       $(this).parent().css('display', 'block');
-     } else if (getChosung($(this).text()).includes(target_name)) {
-       $(this).parent().css('display', 'block');
-     }
-   });
-   }
- });
+      li.css('display', 'block');
+    } else {
+      li.css('display', 'none');
+      li.children('label').each(function(idx) {
+        if ($(this).text().includes(target_name)) {
+          $(this).parent().css('display', 'block');
+        } else if (getChosung($(this).text()).includes(target_name)) {
+          $(this).parent().css('display', 'block');
+        }
+      });
+    }
+  });
 
   // load characters and append to list
   const characters = DataManager.getCharacters();
