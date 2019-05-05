@@ -109,8 +109,8 @@ function resizeResource() {
   ico_width = ico_height_pix * 100 / enemy_icon_view.dom.width();
   enemy_icon_view.setIconSize(ico_width, ico_height);
 
-  const checkmark_height_pix = $('.checkmark').height();
-  const checkmark_width = checkmark_height_pix * 100 / $('label.container').width();
+  const checkmark_height_pix = $('.checkmark:visible').height();
+  const checkmark_width = checkmark_height_pix * 100 / $('label.container:visible').width();
   $('.checkmark').css('width', `${checkmark_width}%`);
   $('label.container').css('padding-left', `${(checkmark_width+3)}%`);
 }
