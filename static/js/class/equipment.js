@@ -26,6 +26,11 @@ class Equipment {
 		this.blueprint = blueprint;
 	}
 
+	// return 0.png -> 0_invalid.png
+	get invalidIcon() {
+		return this.icon.replace('.png', '_invalid.png');
+	}
+
 	getFullBlueprint() {
 		var fullBlueprint = [];
 		for (var bp of this.blueprint) {
