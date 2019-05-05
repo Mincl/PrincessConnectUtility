@@ -43,6 +43,7 @@
       </ul>
     </div>
     <div id="rank_div" class="rank_view">
+      <div class="right_arrow"></div>
     </div>
   </div>
 </body>
@@ -103,6 +104,9 @@ function resizeResource() {
   const view_height = view_height_r / view_width_r * view_width;
   $('.simulator .rank_view .view').height(view_height);
 
+  // rank view resize
+  $('.simulator .rank_view').height(view_height);
+
   // equipment height recalculate
   const eq_width_pix = view_width * equipment_width / 100;
   equipment_height = eq_width_pix * 100 / cur_view.dom.height();
@@ -131,6 +135,14 @@ window.onload = function() {
   $('#rank_div').css('width', `${rank_width}%`);
   $('#rank_div').append(cur_view.dom);
   $('#rank_div').append(target_view.dom);
+
+  cur_view.clickRank(function(e) {
+    cur_view.incrRankNum();
+  });
+
+  target_view.clickRank(function(e) {
+    target_view.incrRankNum();
+  });
 
   // 초성검색까지 됨
   $('.search').bind('change keydown keyup',function(e) {

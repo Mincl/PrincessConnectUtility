@@ -6,6 +6,11 @@ class IconView {
 		this.ico_width_p = 0;
 		this.ico_height_p = 0;
 		this.icons = {};
+		this.rank_img = $('<div class="rank_img"></div>');
+		this.rank_img.append($('<span class="rank_text"></span>'));
+		this.rank_num = $('<span class="rank_num" rank="1"></span>');
+		this.rank_img.append(this.rank_num);
+		this.dom.append(this.rank_img);
 	}
 
 	// ico_width_p: int (percent)
@@ -41,6 +46,27 @@ class IconView {
 	removeIcon(id) {
 		this.icons[id].remove();
 		delete this.icons[id];
+	}
+
+	// callback: function
+	clickRank(callback) {
+		this.rank_img.click(callback);
+		return this;
+	}
+
+	// num: digit
+	changeRankNum(num) {
+		const n = parseInt(num);
+		if (1 <= n && n <= 8) {
+			this.rank_num.attr('rank', num);
+		}
+	}
+
+	incrRankNum() {
+		var n = parseInt(this.rank_num.attr('rank'));
+		n++;
+		if (n > 8) n = 1;
+		this.changeRankNum(n);
 	}
 
 	clear() {

@@ -87,6 +87,18 @@ body {
 	background-size: contain;
 }
 
+.simulator .rank_view .right_arrow {
+	display: inline-block;
+	position: absolute;
+	background-image: url("../images/etc/right_arrow.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	left: 45.0195%;
+	top: 34.355%;
+	width: 9.472%;
+	height: 11.503%;
+}
+
 .simulator .rank_view .view {
 	margin: 0;
 	display: inline-block;
@@ -101,3 +113,75 @@ body {
 .simulator .rank_view .view .equipment img {
 	width: 100%;
 }
+
+.simulator .rank_view .view .rank_img {
+	margin: 0;
+	display: inline-block;
+	position: absolute;
+	width: 30.078%;
+	height: 6.748%;
+}
+
+#cur_view .rank_img {
+	left: 31.64%;
+	top: 14.877%;
+}
+
+#target_view .rank_img {
+	right: 31.64%;
+	top: 14.877%;
+}
+
+.simulator .rank_view .view .rank_img .rank_text {
+	display: inline-block;
+	width: 78.571%;
+	height: 100%;
+	background-image: url("../images/etc/rank_text.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.simulator .rank_view .view .rank_img .rank_num {
+	display: inline-block;
+	width: 21.429%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="1"] {
+	background-image: url("../images/etc/rank_1.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="2"] {
+	background-image: url("../images/etc/rank_2.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="3"] {
+	background-image: url("../images/etc/rank_3.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="4"] {
+	background-image: url("../images/etc/rank_4.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="5"] {
+	background-image: url("../images/etc/rank_5.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="6"] {
+	background-image: url("../images/etc/rank_6.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="7"] {
+	background-image: url("../images/etc/rank_7.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="8"] {
+	background-image: url("../images/etc/rank_8.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="9"] {
+	background-image: url("../images/etc/rank_9.png");
+}
+
