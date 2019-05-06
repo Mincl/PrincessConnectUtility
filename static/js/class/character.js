@@ -1,5 +1,5 @@
 class Character {
-	// id: int
+	// id: string
 	// name: string
 	// icon: string (path)
 	// dist: int

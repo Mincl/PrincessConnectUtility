@@ -13,6 +13,10 @@ class IconView {
 		this.dom.append(this.rank_img);
 	}
 
+	get rankNum() {
+		return parseInt(this.rank_num.attr('rank'));
+	}
+
 	// ico_width_p: int (percent)
 	// ico_height_p: int (percent)
 	setIconSize(ico_width_p, ico_height_p) {
@@ -23,12 +27,12 @@ class IconView {
 		}
 	}
 
-	// id: string
+	// iconId: string
 	// left_p: int (percent)
 	// top_p: int (percent)
 	// equipment: Equipment
-	addIcon(id, left_p, top_p, equipment) {
-		const newIconId = `ico_${id}`;
+	addIcon(iconId, left_p, top_p, equipment) {
+		const newIconId = `ico_${iconId}`;
 		if (this.icons[newIconId] != undefined)
 			return null;
 		var newIcon = new Icon(equipment);
@@ -42,10 +46,10 @@ class IconView {
 		return newIconId;
 	}
 
-	// id: string
-	removeIcon(id) {
-		this.icons[id].remove();
-		delete this.icons[id];
+	// iconId: string
+	removeIcon(iconId) {
+		this.icons[iconId].remove();
+		delete this.icons[iconId];
 	}
 
 	// callback: function

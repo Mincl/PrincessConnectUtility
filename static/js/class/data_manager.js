@@ -85,6 +85,7 @@ class DataManager {
 
 	static getEquipments() {
 		const equipmentData = [
+			new Equipment("equip_unknown", "?", "static/images/icons/equipment/unknown.png", undefined),
 			new Equipment("equip_0", "엔젤 블레이드", "static/images/icons/equipment/0.png", undefined,
 				[{"equipId": "equip_143", "count": 20}]),
 			new Equipment("equip_1", "태양검", "static/images/icons/equipment/1.png", undefined,

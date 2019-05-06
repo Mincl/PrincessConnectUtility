@@ -186,12 +186,9 @@ window.onload = function() {
   resizeResource();
 
   // testcode
-  var eq = DataManager.getEquipmentById('equip_0');
+  var eq = DataManager.getEquipmentById('equip_unknown');
   for (var i = 0; i < cur_view_pos.length; i++) {
     cur_view.addIcon(`c_${i}`, cur_view_pos[i].left, cur_view_pos[i].top, eq);
-  }
-  eq = DataManager.getEquipmentById('equip_1');
-  for (var i = 0; i < target_view_pos.length; i++) {
     target_view.addIcon(`t_${i}`, target_view_pos[i].left, target_view_pos[i].top, eq);
   }
 }
