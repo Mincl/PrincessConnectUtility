@@ -99,6 +99,32 @@ body {
 	height: 11.503%;
 }
 
+.simulator .rank_view .btn {
+	outline: none;
+	cursor: pointer;
+	border: none;
+	display: inline-block;
+	position: absolute;
+	background-color: transparent;
+	background-image: url("../images/etc/material_calculate_btn.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	left: 41.5%;
+	top: 80%;
+	width: 17%;
+	height: 10%;
+	z-index: 10;
+	transition: transform 0.1s linear;
+}
+
+.simulator .rank_view .btn:hover {
+	transform: scale(1.1);
+}
+
+.simulator .rank_view .btn:active {
+	transform: scale(0.5);
+}
+
 .simulator .rank_view .view {
 	margin: 0;
 	display: inline-block;

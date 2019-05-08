@@ -1,9 +1,14 @@
 class CharacterRank {
+	// charId: string
 	// rankInfos: Array[RankInfo]
-	constructor() {
+	constructor(charId, rankInfos) {
 		const MAX_RANK = 8;
 
-		this.rankInfos = Array(MAX_RANK);
+		this.charId = charId;
+		this.rankInfos = Array(MAX_RANK+1);
+		for (var rankInfo of rankInfos) {
+			this.rankInfos[rankInfo.rank] = rankInfo;
+		}
 	}
 
 	// rankInfo: RankInfo

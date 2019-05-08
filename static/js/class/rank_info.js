@@ -1,10 +1,14 @@
 class RankInfo {
 	// rank: integer
-	// equipments: array[Equipment]
+	// equipIds: array[string]
 	// stat: Stat
-	constructor(rank, equipments, stat) {
+	constructor(rank, equipIds, stat) {
 		this.rank = rank;
-		this.equipments = equipments;
+		this.equipments = [];
+        for (var equipId of equipIds) {
+            var eq = DataManager.getEquipmentById(equipId);
+            this.equipments.push(eq);
+        }
 		this.stat = stat;
 	}
 }

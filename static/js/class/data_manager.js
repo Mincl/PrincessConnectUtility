@@ -1,4 +1,45 @@
 class DataManager {
+	static getCharRanks() {
+		const charRankData = [
+			new CharacterRank(
+				"chara_1",
+				[
+					new RankInfo(1, ["equip_128","equip_137","equip_135","equip_137","equip_140","equip_141"]),
+					new RankInfo(2, ["equip_119","equip_106","equip_94","equip_107","equip_140","equip_141"]),
+					new RankInfo(3, ["equip_45","equip_102","equip_95","equip_102","equip_124","equip_111"]),
+					new RankInfo(4, ["equip_46", "equip_74", "equip_67", "equip_74", "equip_125", "equip_112"]),
+					new RankInfo(5, ["equip_47", "equip_73", "equip_65", "equip_73", "equip_80", "equip_83"]),
+					new RankInfo(6, ["equip_0", "equip_85", "equip_66", "equip_73", "equip_81", "equip_84"]),
+					new RankInfo(7, ["equip_1", "equip_22", "equip_19", "equip_85", "equip_85", "equip_84"]),
+					new RankInfo(8, ["equip_27", "equip_1", "equip_40", "equip_25", "equip_43", "equip_85"])
+				]
+			),
+		];
+
+		return charRankData;
+	}
+
+	// charId: string
+	static getCharRankByCharId(charId) {
+		const charRankData = DataManager.getCharRanks();
+		for (var charRank of charRankData) {
+			if (charRank.charId == charId) {
+				return charRank;
+			}
+		}
+	}
+
+	// charId: string
+	// rank: integer
+	static getCharRankByCharIdAndRank(charId, rank) {
+		const charRankData = DataManager.getCharRanks();
+		for (var charRank of charRankData) {
+			if (charRank.charId == charId) {
+				return charRank.getRankInfo(rank);
+			}
+		}
+	}
+
 	static getCharacters() {
 		const characterData = [
 			new Character("chara_1", "노조미", "static/images/icons/character/노조미.png", 160 ),
@@ -83,6 +124,16 @@ class DataManager {
 		return characterData;
 	}
 
+	// id: string
+	static getCharacterById(id) {
+		const characterData = DataManager.getCharacters();
+		for (var char of characterData) {
+			if (char.id == id) {
+				return char;
+			}
+		}
+	}
+
 	static getEquipments() {
 		const equipmentData = [
 			new Equipment("equip_unknown", "?", "static/images/icons/equipment/unknown.png", undefined),
@@ -160,43 +211,62 @@ class DataManager {
 			new Equipment("equip_26", "위저드 후드", "static/images/icons/equipment/26.png", undefined,
 				[{"equipId": "equip_202", "count": 20},
 				{"equipId": "equip_89", "count": 1}]),
-			// 나중에 업데이트
-			// new Equipment("equip_27", "아이스 클레이모어", "static/images/icons/equipment/27.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_28", "매신의 빛나는 검", "static/images/icons/equipment/28.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_29", "다크 매터 엣지", "static/images/icons/equipment/29.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_30", "블리자드 클로", "static/images/icons/equipment/30.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_31", "아르테미스 보우", "static/images/icons/equipment/31.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_32", "스톰 브링어", "static/images/icons/equipment/32.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_33", "여왕의 전투 도끼", "static/images/icons/equipment/33.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_34", "사법신의 석장", "static/images/icons/equipment/34.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_35", "피닉스 로드", "static/images/icons/equipment/35.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_36", "미스릴 플레이트", "static/images/icons/equipment/36.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_37", "버밀리온 메일", "static/images/icons/equipment/37.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_38", "은둔자의 의복", "static/images/icons/equipment/38.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_39", "성자의 로브", "static/images/icons/equipment/39.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_40", "엔젤 부츠", "static/images/icons/equipment/40.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_41", "법왕의 후드", "static/images/icons/equipment/41.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_42", "엘리멘탈 하트", "static/images/icons/equipment/42.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_43", "수호의 팔찌", "static/images/icons/equipment/43.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
-			// new Equipment("equip_44", "초승달의 한탄", "static/images/icons/equipment/44.png", undefined,
-			// 	[{"equipId": "equip_", "count": 20}]),
+			new Equipment("equip_27", "아이스 클레이모어", "static/images/icons/equipment/27.png", undefined,
+				[{"equipId": "equip_158", "count": 20}]),
+			new Equipment("equip_28", "매신의 빛나는 검", "static/images/icons/equipment/28.png", undefined,
+				[{"equipId": "equip_159", "count": 20}]),
+			new Equipment("equip_29", "다크 매터 엣지", "static/images/icons/equipment/29.png", undefined,
+				[{"equipId": "equip_160", "count": 20}]),
+			new Equipment("equip_30", "블리자드 클로", "static/images/icons/equipment/30.png", undefined,
+				[{"equipId": "equip_203", "count": 20},
+				{"equipId": "equip_6", "count": 1},
+				{"equipId": "equip_86", "count": 1}]),
+			new Equipment("equip_31", "아르테미스 보우", "static/images/icons/equipment/31.png", undefined,
+				[{"equipId": "equip_161", "count": 20}]),
+			new Equipment("equip_32", "스톰 브링어", "static/images/icons/equipment/32.png", undefined,
+				[{"equipId": "equip_204", "count": 20},
+				{"equipId": "equip_10", "count": 1}]),
+			new Equipment("equip_33", "여왕의 전투 도끼", "static/images/icons/equipment/33.png", undefined,
+				[{"equipId": "equip_162", "count": 20}]),
+			new Equipment("equip_34", "사법신의 석장", "static/images/icons/equipment/34.png", undefined,
+				[{"equipId": "equip_163", "count": 20}]),
+			new Equipment("equip_35", "피닉스 로드", "static/images/icons/equipment/35.png", undefined,
+				[{"equipId": "equip_205", "count": 20},
+				{"equipId": "equip_16", "count": 1},
+				{"equipId": "equip_89", "count": 1},
+				{"equipId": "equip_82", "count": 1}]),
+			new Equipment("equip_36", "미스릴 플레이트", "static/images/icons/equipment/36.png", undefined,
+				[{"equipId": "equip_206", "count": 20},
+				{"equipId": "equip_65", "count": 1},
+				{"equipId": "equip_73", "count": 1},
+				{"equipId": "equip_81", "count": 1}]),
+			new Equipment("equip_37", "버밀리온 메일", "static/images/icons/equipment/37.png", undefined,
+				[{"equipId": "equip_207", "count": 20},
+				{"equipId": "equip_66", "count": 1},
+				{"equipId": "equip_56", "count": 1}]),
+			new Equipment("equip_38", "은둔자의 의복", "static/images/icons/equipment/38.png", undefined,
+				[{"equipId": "equip_208", "count": 20},
+				{"equipId": "equip_51", "count": 1},
+				{"equipId": "equip_80", "count": 1}]),
+			new Equipment("equip_39", "성자의 로브", "static/images/icons/equipment/39.png", undefined,
+				[{"equipId": "equip_209", "count": 20},
+				{"equipId": "equip_89", "count": 1},
+				{"equipId": "equip_87", "count": 1}]),
+			new Equipment("equip_40", "엔젤 부츠", "static/images/icons/equipment/40.png", undefined,
+				[{"equipId": "equip_210", "count": 20},
+				{"equipId": "equip_84", "count": 1},
+				{"equipId": "equip_47", "count": 1}]),
+			new Equipment("equip_41", "법왕의 후드", "static/images/icons/equipment/41.png", undefined,
+				[{"equipId": "equip_211", "count": 20},
+				{"equipId": "equip_85", "count": 1},
+				{"equipId": "equip_79", "count": 1},
+				{"equipId": "equip_71", "count": 1}]),
+			new Equipment("equip_42", "엘리멘탈 하트", "static/images/icons/equipment/42.png", undefined,
+				[{"equipId": "equip_164", "count": 20}]),
+			new Equipment("equip_43", "수호의 팔찌", "static/images/icons/equipment/43.png", undefined,
+				[{"equipId": "equip_165", "count": 20}]),
+			new Equipment("equip_44", "초승달의 한탄", "static/images/icons/equipment/44.png", undefined,
+				[{"equipId": "equip_166", "count": 20}]),
 			new Equipment("equip_45", "빛나는 검", "static/images/icons/equipment/45.png", undefined,
 				[{"equipId": "equip_167", "count": 3}]),
 			new Equipment("equip_46", "용무늬 검", "static/images/icons/equipment/46.png", undefined,
@@ -475,15 +545,7 @@ class DataManager {
 		return equipmentData;
 	}
 
-	static getCharacterById(id) {
-		const characterData = DataManager.getCharacters();
-		for (var char of characterData) {
-			if (char.id == id) {
-				return char;
-			}
-		}
-	}
-
+	// id: string
 	static getEquipmentById(id) {
 		const equipData = DataManager.getEquipments();
 		for (var equip of equipData) {
@@ -491,5 +553,43 @@ class DataManager {
 				return equip;
 			}
 		}
+	}
+
+	// name: string
+	static getEquipmentByName(name) {
+		const equipData = DataManager.getEquipments();
+		for (var equip of equipData) {
+			var trim = equip.name.replace(/ /g, "");
+			if (trim.includes(name)) {
+				return equip;
+			}
+		}
+	}
+
+	// name: string
+	static getEquipmentsByName(name) {
+		var res = [];
+		const equipData = DataManager.getEquipments();
+		for (var equip of equipData) {
+			var trim = equip.name.replace(/ /g, "");
+			if (trim.includes(name)) {
+				res.push(equip);
+			}
+		}
+		return res;
+	}
+
+	// temporary function
+	// names: array[string]
+	static getEq(names) {
+		var res = [];
+		var res_name = [];
+		for (var name of names) {
+			var eq = DataManager.getEquipmentByName(name);
+			res.push(eq.id);
+			res_name.push(eq.name);
+		}
+		console.log(res_name);
+		return res;
 	}
 }

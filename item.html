@@ -44,6 +44,7 @@
     </div>
     <div id="rank_div" class="rank_view">
       <div class="right_arrow"></div>
+      <button class="btn"></button>
     </div>
   </div>
 </body>
@@ -67,19 +68,19 @@ var equipment_height=0;
 
 const cur_view_pos=[
   {top:18.251,left:10.937},
-  {top:33.435,left:2.539},
-  {top:48.619,left:10.937},
   {top:18.251,left:63.281},
+  {top:33.435,left:2.539},
   {top:33.435,left:71.679},
+  {top:48.619,left:10.937},
   {top:48.619,left:63.281}
 ];
 
 const target_view_pos=[
   {top:18.251,left:19.937},
-  {top:33.435,left:11.539},
-  {top:48.619,left:19.937},
   {top:18.251,left:72.281},
+  {top:33.435,left:11.539},
   {top:33.435,left:80.679},
+  {top:48.619,left:19.937},
   {top:48.619,left:72.281}
 ];
 
@@ -125,9 +126,23 @@ window.onresize = function() {
 }
 
 function checkboxChange(target) {
-  var id = $(target).attr('name');
-  $(`input:checked:not([name="${id}"])`).prop('checked', false);
-  log(id);
+  var charId = $(target).attr('name');
+  $(`input:checked:not([name="${charId}"])`).prop('checked', false);
+  log(charId);
+
+  // set equipment
+  viewChange(cur_view, cur_view_pos, charId, cur_view.rankNum, 'c');
+  viewChange(target_view, target_view_pos, charId, target_view.rankNum, 't');
+}
+
+function viewChange(view, view_pos, charId, rank, prefix) {
+  const rankInfo = DataManager.getCharRankByCharIdAndRank(charId, rank);
+  if (rankInfo != undefined) {
+    view.clear();
+    for (var i in rankInfo.equipments) {
+      view.addIcon(`${prefix}_${i}`, view_pos[i].left, view_pos[i].top, rankInfo.equipments[i]);
+    }
+  }
 }
 
 window.onload = function() {
@@ -137,11 +152,15 @@ window.onload = function() {
   $('#rank_div').append(target_view.dom);
 
   cur_view.clickRank(function(e) {
+    const charId = $('input:checked').attr('name');
     cur_view.incrRankNum();
+    viewChange(cur_view, cur_view_pos, charId, cur_view.rankNum, 'c');
   });
 
   target_view.clickRank(function(e) {
+    const charId = $('input:checked').attr('name');
     target_view.incrRankNum();
+    viewChange(target_view, target_view_pos, charId, target_view.rankNum, 't');
   });
 
   // 초성검색까지 됨
@@ -185,7 +204,7 @@ window.onload = function() {
 
   resizeResource();
 
-  // testcode
+  // default icon
   var eq = DataManager.getEquipmentById('equip_unknown');
   for (var i = 0; i < cur_view_pos.length; i++) {
     cur_view.addIcon(`c_${i}`, cur_view_pos[i].left, cur_view_pos[i].top, eq);
