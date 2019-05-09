@@ -179,7 +179,7 @@ window.onload = function() {
   });
 
   // calculate button
-  $('#rank_div .btn').click(function(e) {
+  $('#rank_div .btn').mousedown(function(e) {
     if ($('input:checked').length <= 0) {
       return;
     }
@@ -191,13 +191,13 @@ window.onload = function() {
     if (curRank < targetRank || (curRank == targetRank && arrayIncludes(cur_view.invalidEquipments, target_view.invalidEquipments))) {
       var requireEquipments = cur_view.invalidEquipments;
 
-      // if same rank, just set target_view's invalid equipments
+      // if same rank, just set target_view's valid equipments
       if (curRank == targetRank) {
-        requireEquipments = target_view.invalidEquipments;
+        requireEquipments = target_view.validEquipments;
 
       } else {
         // add array
-        requireEquipments = requireEquipments.concat(target_view.invalidEquipments);
+        requireEquipments = requireEquipments.concat(target_view.validEquipments);
         for (var r = curRank + 1; r < targetRank; r++) {
           const rankInfo = DataManager.getCharRankByCharIdAndRank(charId, r);
           requireEquipments = requireEquipments.concat(rankInfo.equipments);
