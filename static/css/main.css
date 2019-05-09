@@ -1,7 +1,8 @@
-body {
+body,div {
 	margin: 0;
 }
 
+/* navigation bar */
 .nav {
 	width: 100%;
 	height: 45px;
@@ -10,7 +11,6 @@ body {
 
 .nav ul {
 	list-style-type: none;
-	margin: 0;
 	padding: 0;
 	overflow: hidden;
 	background-color: #f3f3f3;
@@ -34,10 +34,12 @@ body {
 	background-color: #4CAF50;
 }
 
+
 .simulator {
 	display: flex;
 }
 
+/* distance simulator */
 .simulator .visual_view {
 	display: inline-block;
 	position: relative;
@@ -79,6 +81,7 @@ body {
 	height: 30%;
 }
 
+/* item farming simulator */
 .simulator .rank_view {
 	display: inline-block;
 	position: relative;
@@ -126,7 +129,6 @@ body {
 }
 
 .simulator .rank_view .view {
-	margin: 0;
 	display: inline-block;
 	position: relative;
 	width: 50%;
@@ -141,7 +143,6 @@ body {
 }
 
 .simulator .rank_view .view .rank_img {
-	margin: 0;
 	display: inline-block;
 	position: absolute;
 	width: 30.078%;
@@ -211,3 +212,22 @@ body {
 	background-image: url("../images/etc/rank_9.png");
 }
 
+/* item farming result */
+.result .equipment {
+	margin-left: 2%;
+	display: inline-block;
+}
+
+.result .equipment .eq_image {
+	height: 5%;
+	display: inline-block;
+}
+
+.result .equipment .eq_image img {
+	height: 100%;
+}
+
+.result .equipment .eq_count {
+	font-size: 100%;
+	display: inline-block;
+}

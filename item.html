@@ -47,6 +47,14 @@
       <button class="btn"></button>
     </div>
   </div>
+  <div id="result_div" class="result">
+<!--<div class="equipment">
+      <div class="eq_image">
+        <img src="static/images/icons/equipment/65.png"/>
+      </div>
+      <div class="eq_count">x 5</div>
+    </div>-->
+  </div>
 </body>
 </html>
 
@@ -183,10 +191,9 @@ window.onload = function() {
     if (curRank < targetRank || (curRank == targetRank && arrayIncludes(cur_view.invalidEquipments, target_view.invalidEquipments))) {
       var requireEquipments = cur_view.invalidEquipments;
 
-      // if same rank, subtract array
+      // if same rank, just set target_view's invalid equipments
       if (curRank == targetRank) {
-        const targetEqIds = target_view.invalidEquipments.map(el => el.id);
-        requireEquipments = requireEquipments.filter(el => targetEqIds.includes(el.id));
+        requireEquipments = target_view.invalidEquipments;
 
       } else {
         // add array
@@ -210,6 +217,26 @@ window.onload = function() {
         }
       }
       log(blueprint);
+
+      // show result
+      $('#result_div .equipment').remove();
+      for (var material of blueprint) {
+        const eq = DataManager.getEquipmentById(material['equipId']);
+
+        // TODO: this is temporary code. you need to separate other view files.
+        var div_equipment = $('<div class="equipment"></div>');
+        var div_eq_image = $('<div class="eq_image"></div>');
+        var img = $('<img />');
+        img.attr('src', eq.icon);
+        div_eq_image.append(img);
+        div_equipment.append(div_eq_image);
+
+        var div_eq_count = $('<div class="eq_count"></div>');
+        div_eq_count.text(`x ${material['count']}`);
+        div_equipment.append(div_eq_count);
+
+        $('#result_div').append(div_equipment);
+      }
 
     } else {
       window.alert("계산할 수 없음!!");
