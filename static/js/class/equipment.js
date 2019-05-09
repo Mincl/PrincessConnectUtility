@@ -1,15 +1,28 @@
 class Equipment {
 	// blueprint: Array[Dictionary{'equipId':string, 'count':int}]
-	// material: Dictionary{'equipId':string, 'count':int}]
+	// material: Dictionary{'equipId':string, 'count':int}
 	static addMaterialToBlueprint(blueprint, material) {
-		for (var bp of blueprint) {
-			if (bp['equipId'] == material['equipId']) {
-				bp['count'] += material['count'];
-				return blueprint;
+		if (material != undefined) {
+			for (var bp of blueprint) {
+				if (bp['equipId'] == material['equipId']) {
+					bp['count'] += material['count'];
+					return blueprint;
+				}
+			}
+
+			blueprint.push(material);
+		}
+		return blueprint;
+	}
+
+	// blueprint: Array[Dictionary{'equipId':string, 'count':int}]
+	// materials: Array[Dictionary{'equipId':string, 'count':int}]
+	static addMaterialsToBlueprint(blueprint, materials) {
+		if (materials != undefined) {
+			for (var material of materials) {
+				blueprint = Equipment.addMaterialToBlueprint(blueprint, material);
 			}
 		}
-
-		blueprint.push(material);
 		return blueprint;
 	}
 
@@ -33,24 +46,26 @@ class Equipment {
 
 	getFullBlueprint() {
 		var fullBlueprint = [];
-		for (var bp of this.blueprint) {
-			const equip = DataManager.getEquipmentById(bp['equipId']);
-			// has blueprint, calculate raw materials
-			if (equip.blueprint != undefined) {
-				// get raw materials from subBlueprint
-				const subBlueprint = equip.getFullBlueprint();
-				for (var subp of subBlueprint) {
-					var cnt = parseInt(bp['count']) * parseInt(subp['count']);
+		if (this.blueprint != undefined) {
+			for (var bp of this.blueprint) {
+				const equip = DataManager.getEquipmentById(bp['equipId']);
+				// has blueprint, calculate raw materials
+				if (equip.blueprint != undefined) {
+					// get raw materials from subBlueprint
+					const subBlueprint = equip.getFullBlueprint();
+					for (var subp of subBlueprint) {
+						var cnt = parseInt(bp['count']) * parseInt(subp['count']);
+						Equipment.addMaterialToBlueprint(fullBlueprint, {
+							'equipId': subp['equipId'],
+							'count': cnt
+						});
+					}
+				} else {
 					Equipment.addMaterialToBlueprint(fullBlueprint, {
-						'equipId': subp['equipId'],
-						'count': cnt
+						'equipId': bp['equipId'],
+						'count': bp['count']
 					});
 				}
-			} else {
-				Equipment.addMaterialToBlueprint(fullBlueprint, {
-					'equipId': bp['equipId'],
-					'count': bp['count']
-				});
 			}
 		}
 

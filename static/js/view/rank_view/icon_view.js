@@ -17,6 +17,16 @@ class IconView {
 		return parseInt(this.rank_num.attr('rank'));
 	}
 
+	get invalidEquipments() {
+		var res = [];
+		for (var i in this.icons) {
+			if (this.icons[i].invalid) {
+				res.push(this.icons[i].equipment);
+			}
+		}
+		return res;
+	}
+
 	// ico_width_p: int (percent)
 	// ico_height_p: int (percent)
 	setIconSize(ico_width_p, ico_height_p) {

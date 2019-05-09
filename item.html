@@ -51,8 +51,8 @@
 </html>
 
 <script type="text/javascript">
+var DEBUG=false;
 // const value's
-const DEBUG=false;
 
 // draw screen size percent
 const rank_width=55;
@@ -90,6 +90,11 @@ var target_view = new IconView('target_view');
 function log(str) {
   if (DEBUG)
     console.log(str);
+}
+
+function arrayIncludes(main, sub) {
+  const mainEqIds = main.map(el => el.id);
+  return sub.every(el => mainEqIds.indexOf(el.id) >= 0);
 }
 
 // 초성 추출
@@ -151,16 +156,64 @@ window.onload = function() {
   $('#rank_div').append(cur_view.dom);
   $('#rank_div').append(target_view.dom);
 
+  // current rank level up
   cur_view.clickRank(function(e) {
     const charId = $('input:checked').attr('name');
     cur_view.incrRankNum();
     viewChange(cur_view, cur_view_pos, charId, cur_view.rankNum, 'c');
   });
 
+  // target rank level up
   target_view.clickRank(function(e) {
     const charId = $('input:checked').attr('name');
     target_view.incrRankNum();
     viewChange(target_view, target_view_pos, charId, target_view.rankNum, 't');
+  });
+
+  // calculate button
+  $('#rank_div .btn').click(function(e) {
+    if ($('input:checked').length <= 0) {
+      return;
+    }
+
+    const charId = $('input:checked').attr('name');
+    const curRank = cur_view.rankNum;
+    const targetRank = target_view.rankNum;
+
+    if (curRank < targetRank || (curRank == targetRank && arrayIncludes(cur_view.invalidEquipments, target_view.invalidEquipments))) {
+      var requireEquipments = cur_view.invalidEquipments;
+
+      // if same rank, subtract array
+      if (curRank == targetRank) {
+        const targetEqIds = target_view.invalidEquipments.map(el => el.id);
+        requireEquipments = requireEquipments.filter(el => targetEqIds.includes(el.id));
+
+      } else {
+        // add array
+        requireEquipments = requireEquipments.concat(target_view.invalidEquipments);
+        for (var r = curRank + 1; r < targetRank; r++) {
+          const rankInfo = DataManager.getCharRankByCharIdAndRank(charId, r);
+          requireEquipments = requireEquipments.concat(rankInfo.equipments);
+        }
+      }
+      log(requireEquipments);
+
+      // blueprint summary
+      var blueprint= [];
+      for (var rEq of requireEquipments) {
+        const subBp = rEq.getFullBlueprint();
+        if (subBp.length == 0) {
+          // if sub blueprint size is zero, add self to blueprint
+          Equipment.addMaterialToBlueprint(blueprint, {'equipId': rEq.id, 'count': 1});
+        } else {
+          Equipment.addMaterialsToBlueprint(blueprint, rEq.getFullBlueprint());
+        }
+      }
+      log(blueprint);
+
+    } else {
+      window.alert("계산할 수 없음!!");
+    }
   });
 
   // 초성검색까지 됨
@@ -169,6 +222,7 @@ window.onload = function() {
     const li = $(this).parents('.list_view').children('ul').children('li');
     if (target_name == "") {
       li.css('display', 'block');
+
     } else {
       li.css('display', 'none');
       li.children('label').each(function(idx) {
