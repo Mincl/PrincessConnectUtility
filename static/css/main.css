@@ -74,7 +74,7 @@ body,div {
 	list-style-type: none;
 	padding-left: 3%;
 	overflow-y: scroll;
-	height: 67%;
+	height: 75%;
 }
 
 .simulator .list_view ul li {
@@ -213,21 +213,33 @@ body,div {
 }
 
 /* item farming result */
+.result {
+	width: 26%;
+	display: inline-block;
+	overflow-y: scroll;
+}
+
 .result .equipment {
-	margin-left: 2%;
+	padding: 2%;
+	width: 29%;
 	display: inline-block;
 }
 
 .result .equipment .eq_image {
-	height: 5%;
 	display: inline-block;
+	position: relative;
 }
 
 .result .equipment .eq_image img {
-	height: 100%;
+	width: 100%;
 }
 
-.result .equipment .eq_count {
+.result .equipment .eq_image .eq_count {
 	font-size: 100%;
+	font-weight: bold;
+	text-shadow: -1px -1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff, 1px 1px 0 #fff;
 	display: inline-block;
+	position: absolute;
+	bottom: 7%;
+	right: 10%;
 }

@@ -41,19 +41,19 @@
       </div>
       <ul class="list left_list">
       </ul>
-    </div>
-    <div id="rank_div" class="rank_view">
+    </div><!-- 
+ --><div id="rank_div" class="rank_view">
       <div class="right_arrow"></div>
       <button class="btn"></button>
+    </div><!-- 
+ --><div id="result_div" class="result">
+  <!--<div class="equipment">
+        <div class="eq_image">
+          <img src="static/images/icons/equipment/65.png"/>
+          <div class="eq_count">x5</div>
+        </div>
+      </div>-->
     </div>
-  </div>
-  <div id="result_div" class="result">
-<!--<div class="equipment">
-      <div class="eq_image">
-        <img src="static/images/icons/equipment/65.png"/>
-      </div>
-      <div class="eq_count">x 5</div>
-    </div>-->
   </div>
 </body>
 </html>
@@ -64,7 +64,7 @@ var DEBUG=false;
 
 // draw screen size percent
 const rank_width=55;
-const item_height=50;
+const item_height=45.4;
 
 // rate of view size
 const view_width_r=512;
@@ -229,11 +229,10 @@ window.onload = function() {
         var img = $('<img />');
         img.attr('src', eq.icon);
         div_eq_image.append(img);
-        div_equipment.append(div_eq_image);
-
         var div_eq_count = $('<div class="eq_count"></div>');
-        div_eq_count.text(`x ${material['count']}`);
-        div_equipment.append(div_eq_count);
+        div_eq_count.text(`x${material['count']}`);
+        div_eq_image.append(div_eq_count);
+        div_equipment.append(div_eq_image);
 
         $('#result_div').append(div_equipment);
       }
