@@ -1,15 +1,49 @@
-body {
+body,div {
 	margin: 0;
 }
+
+/* navigation bar */
+.nav {
+	width: 100%;
+	height: 45px;
+	border-bottom: 1px solid #e7e7e7;
+}
+
+.nav ul {
+	list-style-type: none;
+	padding: 0;
+	overflow: hidden;
+	background-color: #f3f3f3;
+	height: 100%;
+}
+
+.nav ul li {
+	float: left;
+}
+
+.nav ul li a {
+	display: inline-block;
+	color: #666;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+.nav ul li a.active {
+	color: white;
+	background-color: #4CAF50;
+}
+
 
 .simulator {
 	display: flex;
 }
 
+/* distance simulator */
 .simulator .visual_view {
 	display: inline-block;
 	position: relative;
-	background-image: url("../images/bg.png");
+	background-image: url("../images/bg/btArena.png");
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position-y: center;
@@ -40,9 +74,172 @@ body {
 	list-style-type: none;
 	padding-left: 3%;
 	overflow-y: scroll;
-	height: 67%;
+	height: 75%;
 }
 
 .simulator .list_view ul li {
 	height: 30%;
+}
+
+/* item farming simulator */
+.simulator .rank_view {
+	display: inline-block;
+	position: relative;
+	background-image: url("../images/bg/rank.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.simulator .rank_view .right_arrow {
+	display: inline-block;
+	position: absolute;
+	background-image: url("../images/etc/right_arrow.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	left: 45.0195%;
+	top: 34.355%;
+	width: 9.472%;
+	height: 11.503%;
+}
+
+.simulator .rank_view .btn {
+	outline: none;
+	cursor: pointer;
+	border: none;
+	display: inline-block;
+	position: absolute;
+	background-color: transparent;
+	background-image: url("../images/etc/material_calculate_btn.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	left: 41.5%;
+	top: 80%;
+	width: 17%;
+	height: 10%;
+	z-index: 10;
+	transition: transform 0.1s linear;
+}
+
+.simulator .rank_view .btn:hover {
+	transform: scale(1.1);
+}
+
+.simulator .rank_view .btn:active {
+	transform: scale(0.5);
+}
+
+.simulator .rank_view .view {
+	display: inline-block;
+	position: relative;
+	width: 50%;
+}
+
+.simulator .rank_view .view .equipment {
+	position: absolute;
+}
+
+.simulator .rank_view .view .equipment img {
+	width: 100%;
+}
+
+.simulator .rank_view .view .rank_img {
+	display: inline-block;
+	position: absolute;
+	width: 30.078%;
+	height: 6.748%;
+}
+
+#cur_view .rank_img {
+	left: 31.64%;
+	top: 14.877%;
+}
+
+#target_view .rank_img {
+	right: 31.64%;
+	top: 14.877%;
+}
+
+.simulator .rank_view .view .rank_img .rank_text {
+	display: inline-block;
+	width: 78.571%;
+	height: 100%;
+	background-image: url("../images/etc/rank_text.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.simulator .rank_view .view .rank_img .rank_num {
+	display: inline-block;
+	width: 21.429%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="1"] {
+	background-image: url("../images/etc/rank_1.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="2"] {
+	background-image: url("../images/etc/rank_2.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="3"] {
+	background-image: url("../images/etc/rank_3.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="4"] {
+	background-image: url("../images/etc/rank_4.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="5"] {
+	background-image: url("../images/etc/rank_5.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="6"] {
+	background-image: url("../images/etc/rank_6.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="7"] {
+	background-image: url("../images/etc/rank_7.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="8"] {
+	background-image: url("../images/etc/rank_8.png");
+}
+
+.simulator .rank_view .view .rank_img .rank_num[rank="9"] {
+	background-image: url("../images/etc/rank_9.png");
+}
+
+/* item farming result */
+.result {
+	width: 26%;
+	display: inline-block;
+	overflow-y: scroll;
+}
+
+.result .equipment {
+	padding: 2%;
+	width: 29%;
+	display: inline-block;
+}
+
+.result .equipment .eq_image {
+	display: inline-block;
+	position: relative;
+}
+
+.result .equipment .eq_image img {
+	width: 100%;
+}
+
+.result .equipment .eq_image .eq_count {
+	font-size: 100%;
+	font-weight: bold;
+	text-shadow: -1px -1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff, 1px 1px 0 #fff;
+	display: inline-block;
+	position: absolute;
+	bottom: 7%;
+	right: 10%;
 }

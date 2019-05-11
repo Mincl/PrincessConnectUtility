@@ -1,8 +1,10 @@
 class Party {
+	// members: Array[Character]
 	constructor() {
 		this.members = [];
 	}
 
+	// char: Character
 	addMember(char) {
 		if (this.members.length >= 5)
 			return false;
@@ -12,6 +14,7 @@ class Party {
 		return true;
 	}
 
+	// char: Character
 	removeMember(char) {
 		if (this.members.length <= 0)
 			return false;
@@ -24,6 +27,7 @@ class Party {
 		return true;
 	}
 
+	// id: int
 	getMemberById(id) {
 		for (var member of this.members) {
 			if (member.id == id) {

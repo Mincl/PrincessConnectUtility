@@ -1,0 +1,295 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Princess Connect RE:DIVE Utility</title>
+
+  <link rel="stylesheet" type="text/css" href="static/css/tooltip.css"/>
+  <link rel="stylesheet" type="text/css" href="static/css/checkbox.css"/>
+  <link rel="stylesheet" type="text/css" href="static/css/search.css"/>
+  <link rel="stylesheet" type="text/css" href="static/css/main.css"/>
+
+  <script src="static/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+  <script src="static/js/hangul-js.js" type="text/javascript"></script>
+
+  <script src="static/js/class/stat.js" type="text/javascript"></script>
+  <script src="static/js/class/equipment.js" type="text/javascript"></script>
+  <script src="static/js/class/stage.js" type="text/javascript"></script>
+  <script src="static/js/class/rank_info.js" type="text/javascript"></script>
+  <script src="static/js/class/character_rank.js" type="text/javascript"></script>
+  <script src="static/js/class/character.js" type="text/javascript"></script>
+  <script src="static/js/class/party.js" type="text/javascript"></script>
+  <script src="static/js/class/data_manager.js" type="text/javascript"></script>
+
+  <script src="static/js/view/rank_view/icon.js" type="text/javascript"></script>
+  <script src="static/js/view/rank_view/icon_view.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+  <div class="nav">
+    <ul>
+      <li><a href="index.html">배틀아레나 파티 배치</a></li>
+      <li><a href="#" class="active">파밍 계산</a></li>
+    </ul>
+  </div>
+
+  <div id="item_div" class="simulator">
+    <div class="list_view">
+      <div>
+        <input class="search" type="text" placeholder="캐릭터 검색"/>
+      </div>
+      <ul class="list left_list">
+      </ul>
+    </div><!-- 
+ --><div id="rank_div" class="rank_view">
+      <div class="right_arrow"></div>
+      <button class="btn"></button>
+    </div><!-- 
+ --><div id="result_div" class="result">
+  <!--<div class="equipment">
+        <div class="eq_image">
+          <img src="static/images/icons/equipment/65.png"/>
+          <div class="eq_count">x5</div>
+        </div>
+      </div>-->
+    </div>
+  </div>
+</body>
+</html>
+
+<script type="text/javascript">
+var DEBUG=false;
+// const value's
+
+// draw screen size percent
+const rank_width=55;
+const item_height=45.4;
+
+// rate of view size
+const view_width_r=512;
+const view_height_r=652;
+
+// equipment size percent by view width
+const equipment_width=16.796;
+var equipment_height=0;
+
+const cur_view_pos=[
+  {top:18.251,left:10.937},
+  {top:18.251,left:63.281},
+  {top:33.435,left:2.539},
+  {top:33.435,left:71.679},
+  {top:48.619,left:10.937},
+  {top:48.619,left:63.281}
+];
+
+const target_view_pos=[
+  {top:18.251,left:19.937},
+  {top:18.251,left:72.281},
+  {top:33.435,left:11.539},
+  {top:33.435,left:80.679},
+  {top:48.619,left:19.937},
+  {top:48.619,left:72.281}
+];
+
+var cur_view = new IconView('cur_view');
+var target_view = new IconView('target_view');
+
+function log(str) {
+  if (DEBUG)
+    console.log(str);
+}
+
+function arrayIncludes(main, sub) {
+  const mainEqIds = main.map(el => el.id);
+  return sub.every(el => mainEqIds.indexOf(el.id) >= 0);
+}
+
+// 초성 추출
+function getChosung(text) {
+  var dis = Hangul.disassemble(text, true);
+  var cho = dis.reduce((prev, elem) => prev + (elem[0] ? elem[0] : elem), "");
+  return cho;
+}
+
+function resizeResource() {
+  // view resize
+  const view_width = $('.simulator .rank_view .view').width();
+  const view_height = view_height_r / view_width_r * view_width;
+  $('.simulator .rank_view .view').height(view_height);
+
+  // rank view resize
+  $('.simulator .rank_view').height(view_height);
+
+  // equipment height recalculate
+  const eq_width_pix = view_width * equipment_width / 100;
+  equipment_height = eq_width_pix * 100 / cur_view.dom.height();
+  cur_view.setIconSize(equipment_width, equipment_height);
+  equipment_height = eq_width_pix * 100 / target_view.dom.height();
+  target_view.setIconSize(equipment_width, equipment_height);
+
+  const checkmark_height_pix = $('.checkmark:visible').height();
+  const checkmark_width = checkmark_height_pix * 100 / $('label.container:visible').width();
+  $('.checkmark').css('width', `${checkmark_width}%`);
+  $('label.container').css('padding-left', `${(checkmark_width+3)}%`);
+}
+
+window.onresize = function() {
+  resizeResource();
+}
+
+function checkboxChange(target) {
+  var charId = $(target).attr('name');
+  $(`input:checked:not([name="${charId}"])`).prop('checked', false);
+  log(charId);
+
+  // set equipment
+  viewChange(cur_view, cur_view_pos, charId, cur_view.rankNum, 'c');
+  viewChange(target_view, target_view_pos, charId, target_view.rankNum, 't');
+}
+
+function viewChange(view, view_pos, charId, rank, prefix) {
+  const rankInfo = DataManager.getCharRankByCharIdAndRank(charId, rank);
+  if (rankInfo != undefined) {
+    view.clear();
+    for (var i in rankInfo.equipments) {
+      view.addIcon(`${prefix}_${i}`, view_pos[i].left, view_pos[i].top, rankInfo.equipments[i]);
+    }
+  }
+}
+
+window.onload = function() {
+  $('#item_div').css('height', `${item_height}%`);
+  $('#rank_div').css('width', `${rank_width}%`);
+  $('#rank_div').append(cur_view.dom);
+  $('#rank_div').append(target_view.dom);
+
+  // current rank level up
+  cur_view.clickRank(function(e) {
+    const charId = $('input:checked').attr('name');
+    cur_view.incrRankNum();
+    viewChange(cur_view, cur_view_pos, charId, cur_view.rankNum, 'c');
+  });
+
+  // target rank level up
+  target_view.clickRank(function(e) {
+    const charId = $('input:checked').attr('name');
+    target_view.incrRankNum();
+    viewChange(target_view, target_view_pos, charId, target_view.rankNum, 't');
+  });
+
+  // calculate button
+  $('#rank_div .btn').mousedown(function(e) {
+    if ($('input:checked').length <= 0) {
+      return;
+    }
+
+    const charId = $('input:checked').attr('name');
+    const curRank = cur_view.rankNum;
+    const targetRank = target_view.rankNum;
+
+    if (curRank < targetRank || (curRank == targetRank && arrayIncludes(cur_view.invalidEquipments, target_view.invalidEquipments))) {
+      var requireEquipments = cur_view.invalidEquipments;
+
+      // if same rank, just set target_view's valid equipments
+      if (curRank == targetRank) {
+        requireEquipments = target_view.validEquipments;
+
+      } else {
+        // add array
+        requireEquipments = requireEquipments.concat(target_view.validEquipments);
+        for (var r = curRank + 1; r < targetRank; r++) {
+          const rankInfo = DataManager.getCharRankByCharIdAndRank(charId, r);
+          requireEquipments = requireEquipments.concat(rankInfo.equipments);
+        }
+      }
+      log(requireEquipments);
+
+      // blueprint summary
+      var blueprint= [];
+      for (var rEq of requireEquipments) {
+        const subBp = rEq.getFullBlueprint();
+        if (subBp.length == 0) {
+          // if sub blueprint size is zero, add self to blueprint
+          Equipment.addMaterialToBlueprint(blueprint, {'equipId': rEq.id, 'count': 1});
+        } else {
+          Equipment.addMaterialsToBlueprint(blueprint, rEq.getFullBlueprint());
+        }
+      }
+      log(blueprint);
+
+      // show result
+      $('#result_div .equipment').remove();
+      for (var material of blueprint) {
+        const eq = DataManager.getEquipmentById(material['equipId']);
+
+        // TODO: this is temporary code. you need to separate other view files.
+        var div_equipment = $('<div class="equipment"></div>');
+        var div_eq_image = $('<div class="eq_image"></div>');
+        var img = $('<img />');
+        img.attr('src', eq.icon);
+        div_eq_image.append(img);
+        var div_eq_count = $('<div class="eq_count"></div>');
+        div_eq_count.text(`x${material['count']}`);
+        div_eq_image.append(div_eq_count);
+        div_equipment.append(div_eq_image);
+
+        $('#result_div').append(div_equipment);
+      }
+
+    } else {
+      window.alert("계산할 수 없음!!");
+    }
+  });
+
+  // 초성검색까지 됨
+  $('.search').bind('change keydown keyup',function(e) {
+    const target_name = $(this).val();
+    const li = $(this).parents('.list_view').children('ul').children('li');
+    if (target_name == "") {
+      li.css('display', 'block');
+
+    } else {
+      li.css('display', 'none');
+      li.children('label').each(function(idx) {
+        if ($(this).text().includes(target_name)) {
+          $(this).parent().css('display', 'block');
+        } else if (getChosung($(this).text()).includes(target_name)) {
+          $(this).parent().css('display', 'block');
+        }
+      });
+    }
+  });
+
+  // load characters and append to list
+  const characters = DataManager.getCharacters();
+  for(var char of characters) {
+    var li=$(`<li id="li_left_${char.id}"></li>`);
+    var label=$('<label class="container"></label>');
+    var input=$(`<input type="checkbox" name="${char.id}"/>`);
+    input.change(function(e) {
+      checkboxChange(this);
+    });
+    var span=$('<span class="checkmark"></span>');
+    var icon=$('<img />');
+    var name=$(`<span class="name">${char.name}</span>`);
+    icon.attr('src', char.icon);
+    label.append(input);
+    label.append(span);
+    label.append(icon);
+    label.append(name);
+    li.append(label);
+    $('.left_list').append(li);
+  }
+
+  resizeResource();
+
+  // default icon
+  var eq = DataManager.getEquipmentById('equip_unknown');
+  for (var i = 0; i < cur_view_pos.length; i++) {
+    cur_view.addIcon(`c_${i}`, cur_view_pos[i].left, cur_view_pos[i].top, eq);
+    target_view.addIcon(`t_${i}`, target_view_pos[i].left, target_view_pos[i].top, eq);
+  }
+}
+
+</script>

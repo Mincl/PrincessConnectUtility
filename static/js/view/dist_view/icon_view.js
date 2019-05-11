@@ -7,6 +7,8 @@ class IconView {
 		this.icons = {};
 	}
 
+	// ico_width_p: int (percent)
+	// ico_height_p: int (percent)
 	setIconSize(ico_width_p, ico_height_p) {
 		this.ico_width_p = ico_width_p;
 		this.ico_height_p = ico_height_p;
@@ -15,6 +17,12 @@ class IconView {
 		}
 	}
 
+	// id: string
+	// left_p: int (percent)
+	// top_p: int (percent)
+	// tooltip: string
+	// iconUrl: string (path)
+	// callbackOnClick: function
 	addIcon(id, left_p, top_p, tooltip, iconUrl, callbackOnClick) {
 		const newIconId = `p_ico_${id}`;
 		if (this.icons[newIconId] != undefined)
@@ -29,6 +37,7 @@ class IconView {
 		return newIconId;
 	}
 
+	// id: string
 	removeIcon(id) {
 		this.icons[id].remove();
 		delete this.icons[id];
