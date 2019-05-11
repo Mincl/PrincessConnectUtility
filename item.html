@@ -19,7 +19,11 @@
   <script src="static/js/class/character_rank.js" type="text/javascript"></script>
   <script src="static/js/class/character.js" type="text/javascript"></script>
   <script src="static/js/class/party.js" type="text/javascript"></script>
-  <script src="static/js/class/data_manager.js" type="text/javascript"></script>
+
+  <script src="static/js/data/data_character.js" type="text/javascript"></script>
+  <script src="static/js/data/data_equipment.js" type="text/javascript"></script>
+  <script src="static/js/data/data_rank.js" type="text/javascript"></script>
+  <script src="static/js/data/data_manager.js" type="text/javascript"></script>
 
   <script src="static/js/view/rank_view/icon.js" type="text/javascript"></script>
   <script src="static/js/view/rank_view/icon_view.js" type="text/javascript"></script>
@@ -149,7 +153,7 @@ function checkboxChange(target) {
 }
 
 function viewChange(view, view_pos, charId, rank, prefix) {
-  const rankInfo = DataManager.getCharRankByCharIdAndRank(charId, rank);
+  const rankInfo = DataManager.getRankInfoByCharIdAndRank(charId, rank);
   if (rankInfo != undefined) {
     view.clear();
     for (var i in rankInfo.equipments) {
@@ -199,7 +203,7 @@ window.onload = function() {
         // add array
         requireEquipments = requireEquipments.concat(target_view.validEquipments);
         for (var r = curRank + 1; r < targetRank; r++) {
-          const rankInfo = DataManager.getCharRankByCharIdAndRank(charId, r);
+          const rankInfo = DataManager.getRankInfoByCharIdAndRank(charId, r);
           requireEquipments = requireEquipments.concat(rankInfo.equipments);
         }
       }

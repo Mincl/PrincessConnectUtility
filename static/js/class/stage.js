@@ -7,12 +7,19 @@ class Stage {
 		this.chapter = chapter;
 		this.number = number;
 		this.stamina = stamina;
-		this.dropEquipIds = dropEquipIds;
+		this.dropEquipments = [];
+        for (var equipId of dropEquipIds) {
+            var eq = DataManager.getEquipmentById(equipId);
+            this.dropEquipments.push(eq);
+        }
 	}
 
 	// equipId: string
-	hasEquip(equipId) {
-
-		return this.dropEquipIds.includes(equipId);
+	isDropEquip(equipId) {
+		for(var eq of this.dropEquipments) {
+			if (eq.id == equipId)
+				return true;
+		}
+		return false;
 	}
 }
