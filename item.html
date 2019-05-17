@@ -195,9 +195,12 @@ window.onload = function() {
     if (curRank < targetRank || (curRank == targetRank && arrayIncludes(cur_view.invalidEquipments, target_view.invalidEquipments))) {
       var requireEquipments = cur_view.invalidEquipments;
 
-      // if same rank, just set target_view's valid equipments
+      // if same rank, subtract cur_view from target_view
       if (curRank == targetRank) {
         requireEquipments = target_view.validEquipments;
+        for(var e of cur_view.validEquipments) {
+          requireEquipments.splice(requireEquipments.findIndex(re => re.id == e.id), 1);
+        }
 
       } else {
         // add array
